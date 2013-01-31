@@ -1,0 +1,8 @@
+<project name="Android" default="build">
+	<target name="build">
+		<echo>ttid config</echo>
+		<replace file="assets\ttid.dat"  encoding="UTF-8">
+			<replacefilter  token="999999" value="${version.ttid}"/>
+		</replace>
+		</target>
+</project>

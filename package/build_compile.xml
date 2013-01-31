@@ -1,0 +1,144 @@
+
+<project name="Android" default="dex" basedir=".">
+	<property name="outdir" value="bin" /> 
+	<property name="outdir-classes" value="${outdir}/classes" />  
+	 <property name="external-libs" value="libs" />  
+	 <property name="proguardlib" value="jars/proguard.jar" /> 
+		<property name="dex-file" value="${basedir}/classes.dex" /> 
+	  <condition property="aapt" value="aapt.exe" else="aapt" >  
+        <os family="windows"/>  
+    </condition>  
+	<condition property="aidl" value="aidl.exe" else="aidl" >  
+        <os family="windows"/> 
+	</condition>	
+	<condition property="dx" value="dx.bat" else="dx">  
+        <os family="windows" />  
+    </condition> 
+	<property name="outdir-r" value="src" />  
+	 <property name="android-jar" value="android.jar" />  
+	<property name="android-framework" value="framework.aidl" /> 
+	<property name="srcdir" value="src" />
+	<property name="resource-dir" value="res" /> 
+	
+
+    	<target name="compile" depends="dirs, resource-src, aidl">  
+        	 <javac encoding="UTF-8" target="1.5" debug="true" extdirs=""  
+                srcdir="."  
+                destdir="${outdir-classes}"  
+                bootclasspath="${android-jar}">  
+            <classpath>  
+                <fileset dir="${external-libs}" includes="*.jar"/>  
+            </classpath>  
+         </javac>  
+
+    	</target>
+		
+		<target name="dirs" >  
+			<echo>Creating output directories if needed...</echo>  
+			<mkdir dir="${outdir}" />  
+			<mkdir dir="${outdir-classes}" />  
+		</target>  
+
+		<!-- Generate the R.java file for this project's resources. -->  
+    <target name="resource-src" depends="dirs">  
+        <echo>Generating R.java / Manifest.java from the resources...</echo>  
+        <exec executable="${aapt}" failonerror="true">  
+            <arg value="package" />  
+            <arg value="-m" />  
+            <arg value="-J" />  
+            <arg value="${outdir-r}" />  
+            <arg value="-M" />  
+            <arg value="AndroidManifest.xml" />  
+            <arg value="-S" />  
+            <arg value="${resource-dir}" />  
+            <arg value="-I" />  
+            <arg value="${android-jar}" />  
+        </exec>  
+    </target>  
+  
+    <!-- Generate java classes from .aidl files. -->  
+    <target name="aidl" depends="dirs">  
+        <echo>Compiling aidl files into Java classes...</echo>  
+        <apply executable="${aidl}" failonerror="true">  
+            <arg value="-p${android-framework}" />  
+            <arg value="-I${srcdir}" />  
+            <fileset dir="${srcdir}">  
+                <include name="**/*.aidl"/>  
+            </fileset>  
+        </apply>  
+    </target>  
+    	
+		<!-- Convert this project's .class files into .dex files. -->  
+    <target name="dex" depends="optimize">  
+        <echo>Converting compiled files and external libraries into ${outdir}/${dex-file}...</echo>  
+        <apply executable="${dx}" failonerror="true" parallel="true">  
+            <arg value="--dex" />  
+			<arg value="--output=${dex-file}" />  
+            <arg path="${outdir-classes}" />  
+            <fileset dir="${external-libs}" includes="*.jar" />  
+        </apply>  
+    </target>  
+
+<target name="optimize" depends="compile"> 
+<jar basedir="${outdir-classes}" destfile="temp.jar" /> 
+
+<java jar="${proguardlib}" fork="true" failonerror="true"> 
+<jvmarg value="-Dmaximum.inlined.code.length=32" /> 
+<arg value="-injars temp.jar" /> 
+<arg value="-outjars optimized.jar" /> 
+<arg value="-libraryjars ${android-jar}" />
+<!-- arg value="-libraryjars ${external-libs}/android-support-v4.jar"/ -->
+
+<arg value="-dontpreverify" /> 
+<arg value="-dontoptimize" /> 
+<arg value="-dontusemixedcaseclassnames" /> 
+<arg value="-keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,LocalVariable*Table,*Annotation*,Synthetic,EnclosingMethod"/>
+<arg value="-repackageclasses ''" /> 
+<arg value="-allowaccessmodification" /> 
+<arg value="-printmapping map.txt" /> 
+
+
+
+
+<arg value="-keep public class com.xxoo.android.demo "/>
+
+
+<arg value="-keep public class * extends android.app.Application "/>
+<arg value="-keep public class * extends android.app.Activity"/>
+<arg value="-keep public class * extends android.app.Service"/>
+<arg value="-keep public class * extends android.os.IInterface"/>
+<arg value="-keep public class * extends android.content.BroadcastReceiver"/>
+<arg value="-keep public class * extends android.content.ContentProvider"/>
+<arg value="-keep public class * extends android.appwidget.AppWidgetProvider"/>
+<arg value="-keep public class * extends android.webkit.*{*;}"/>
+<arg value="-keep public class * extends android.widget.*{*;}"/>
+<arg value="-keep  class * extends android.app.*{*;}"/>
+
+
+
+
+
+
+
+<arg value="-keep public class * implements java.io.Serializable {*;}"/>
+
+<arg value="-keep public class * implements android.os.Parcelable { public static final android.os.Parcelable$Creator *;} "/>
+<arg value="-keepclasseswithmembernames class * { public &lt;init&gt;(android.content.Context, android.util.AttributeSet); }"/>
+<arg value="-keepclasseswithmembernames class * { public &lt;init&gt;(android.content.Context, android.util.AttributeSet,  int ); }"/>
+<arg value="-keepclassmembers enum * { public static **[] values();  public static ** valueOf(java.lang.String); **[] $VALUES; }"/>
+
+<arg value="-keep interface *" />
+
+<arg value="-optimizationpasses 7" /> 
+<arg value="-verbose" /> 
+<arg value="-dontskipnonpubliclibraryclasses" /> 
+<arg value="-dontskipnonpubliclibraryclassmembers" /> 
+</java> 
+<delete file="temp.jar" /> 
+<delete dir="${outdir-classes}" /> 
+<mkdir dir="${outdir-classes}" /> 
+<unzip src="optimized.jar" dest="${outdir-classes}" /> 
+<delete file="optimized.jar" /> 
+</target> 
+
+</project>
