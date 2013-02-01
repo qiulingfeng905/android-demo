@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="MainButton">#780c00</color>
+    <color name="Title">#000000</color>
+    <color name="Body">#666666</color>
+    <color name="Body33">#333333</color>
+    <color name="BodyF5">#F5F5F5</color>
+    <color name="df_text">#FFF9AC</color>
+
+    <!-- 商品购买人数颜色 -->
+    <color name="ItemBuyCount">#444444</color>
+
+    <!-- 通用的描边颜色 -->
+    <color name="CommonStroke">#ababab</color>
+    <!-- 半透明颜色 -->
+    <color name="ComponentTransparent">#10ffffff</color>
+    <!-- 辅助字体 -->
+    <color name="Assistant">#999999</color>
+    <color name="OnDargBg">#ffffff</color>
+    <color name="currPrice">#C3223D</color>
+    <color name="Blue">#385487</color>
+    <color name="TextWhite">#ffffff</color>
+    <color name="TextBlack">#000000</color>
+    <color name="SelectorBlue">#007fea</color>
+
+    <!-- 还有机会 -->
+    <color name="ExistChance">#3883bd</color>
+    <!-- 即将开始 -->
+    <color name="WillBegin">#2f8507</color>
+    <!-- 卖光了 -->
+    <color name="NoChance">#797979</color>
+    <!-- 预下单 -->
+    <color name="ScheduleOrder">#EE8800</color>
+
+    <!-- 选择地址页面的对号颜色 -->
+    <color name="SelectAddress_selectedSymbol">#324f85</color>
+    <!-- 等待预下单、创建中 -->
+    <color name="ScheduleWaiting">#388e07</color>
+    <color name="ScheduleCreating">#388e07</color>
+    <color name="ScheduleOrderSuccess">#388e07</color>
+    <!-- 订单关闭 -->
+    <color name="ScheduleClosed">#999999</color>
+    <!-- 待支付 -->
+    <color name="ScheduleWaitPay">#c7223d</color>
+
+    <drawable name="red">#f00</drawable>
+    <drawable name="green">#0f0</drawable>
+    <drawable name="gray">#ccc</drawable>
+    <drawable name="white">#ffffff</drawable>
+    <drawable name="bg_body">#fff5f5f5</drawable>
+
+    <!-- UserCenter add by mty 2012-11-7 -->
+    <color name="user_name">#ffffff</color>
+    <color name="gray_notify_close">#ffd8d8d8</color>
+    <color name="gray_dark">#666666</color>
+    <color name="gray_light">#aaaaaa</color>
+    <color name="order_waitsend">#609700</color>
+    <color name="order_close">#999999</color>
+    <color name="order_waitpay">#C7223D</color>
+    <color name="order_sucess">#C7223D</color>
+    <color name="brown">#784C31</color>
+    <color name="order_watch_again">#780c00</color>
+    <!-- 二维码 -->
+    <color name="viewfinder_frame">#ff000000</color>
+    <color name="viewfinder_laser">#ffff0000</color>
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="possible_result_points">#c0ffff00</color>
+    <color name="result_view">#b0000000</color>
+    <color name="transparent">#00000000</color>
+
+</resources>
