@@ -5,10 +5,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import com.taobao.ju.android.R;
-import com.taobao.ju.android.activity.WelcomeActivity;
-import com.taobao.ju.android.common.AppHolder;
-import com.taobao.ju.android.common.Log;
+import android.util.Log;
+import com.xxoo.android.demo.R;
 
 /**
  * User: qinmiao.caoqm
@@ -21,12 +19,12 @@ public class PushMsgNotify {
     public static void showNotification(Context context, String title, String content){
         try {
             Notification notification = new Notification(R.drawable.ic_launcher, title, System.currentTimeMillis());
-            NotificationManager manager = (NotificationManager) AppHolder.getContext()
+            NotificationManager manager = (NotificationManager) context
                     .getSystemService(Context.NOTIFICATION_SERVICE);
 
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_LAUNCHER);
-            intent.setClass(context, WelcomeActivity.class);
+            intent.setClass(context, TestActivity.class);
 //        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
 //                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -40,19 +38,12 @@ public class PushMsgNotify {
             notification.defaults = Notification.DEFAULT_ALL;
             //点击消失
             notification.flags |= Notification.FLAG_AUTO_CANCEL;
-            manager.notify(R.layout.push_msg_notification + notifyId++, notification);
+            manager.notify(R.layout.push_set_dialog + notifyId++, notification);
         } catch (Exception e) {
             e.printStackTrace();
-            if(Log.isPrintable()) Log.e("","消息通知栏异常...");
+            Log.e("","消息通知栏异常...");
         }
 
     }
 
-    public static void showNotificationBySetting(Context context, String title, String content) {
-        if (PushMsgManager.isNoticeTime()) {
-            showNotification(context, title, content);
-        } else {
-            if (Log.isPrintable()) Log.d("", "用户设置不显示通知...");
-        }
-    }
 }

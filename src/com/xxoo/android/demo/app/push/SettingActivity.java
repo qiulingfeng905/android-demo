@@ -17,6 +17,7 @@ import android.widget.CheckBox;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import cn.jpush.android.api.JPushInterface;
+import com.xxoo.android.demo.R;
 
 public class SettingActivity extends Activity implements OnClickListener {
 	TimePicker startTime;
@@ -66,8 +67,8 @@ public class SettingActivity extends Activity implements OnClickListener {
     }
    
     private void initData(){
-	  mSettings = getSharedPreferences(ExampleUtil.PREFS_NAME, MODE_PRIVATE);
-	  String days = mSettings.getString(ExampleUtil.PREFS_DAYS, "");
+	  mSettings = getSharedPreferences(MyUtil.PREFS_NAME, MODE_PRIVATE);
+	  String days = mSettings.getString(MyUtil.PREFS_DAYS, "");
 		if (!TextUtils.isEmpty(days)) {
 			initAllWeek(false);
 			String[] sArray = days.split(",");
@@ -78,9 +79,9 @@ public class SettingActivity extends Activity implements OnClickListener {
 			initAllWeek(true);
 		}
 		
-	  int startTimeStr = mSettings.getInt(ExampleUtil.PREFS_START_TIME, 0);
+	  int startTimeStr = mSettings.getInt(MyUtil.PREFS_START_TIME, 0);
 	  startTime.setCurrentHour(Integer.valueOf(startTimeStr));
-	  int endTimeStr = mSettings.getInt(ExampleUtil.PREFS_END_TIME, 23);
+	  int endTimeStr = mSettings.getInt(MyUtil.PREFS_END_TIME, 23);
 	  endTime.setCurrentHour(Integer.valueOf(endTimeStr));
    }
 
@@ -139,9 +140,9 @@ public class SettingActivity extends Activity implements OnClickListener {
 		JPushInterface.setPushTime(getApplicationContext(), days, startime, endtime);
 		
 		mEditor = mSettings.edit();
-		mEditor.putString(ExampleUtil.PREFS_DAYS, daysSB.toString());
-		mEditor.putInt(ExampleUtil.PREFS_START_TIME, startime);
-		mEditor.putInt(ExampleUtil.PREFS_END_TIME, endtime);
+		mEditor.putString(MyUtil.PREFS_DAYS, daysSB.toString());
+		mEditor.putInt(MyUtil.PREFS_START_TIME, startime);
+		mEditor.putInt(MyUtil.PREFS_END_TIME, endtime);
 		mEditor.commit();
 		Toast.makeText(SettingActivity.this, R.string.setting_su, Toast.LENGTH_SHORT).show();
 	}

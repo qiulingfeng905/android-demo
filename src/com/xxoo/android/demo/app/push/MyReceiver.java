@@ -32,11 +32,16 @@ public class MyReceiver extends BroadcastReceiver {
           //send the UnRegistration Id to your server...
         } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
         	Log.d(TAG, "接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
-        
+            String title = bundle.getString(JPushInterface.EXTRA_NOTIFICATION_TITLE);
+            String content = bundle.getString(JPushInterface.EXTRA_MESSAGE);
+            PushMsgNotify.showNotification(context, title, content);
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
             Log.d(TAG, "接收到推送下来的通知");
             int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
+            String title = bundle.getString(JPushInterface.EXTRA_NOTIFICATION_TITLE);
+            String content = bundle.getString(JPushInterface.EXTRA_ALERT);
             Log.d(TAG, "接收到推送下来的通知的ID: " + notifactionId);
+            PushMsgNotify.showNotification(context, title, content);
         	
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             Log.d(TAG, "用户点击打开了通知");

@@ -87,7 +87,7 @@
 <arg value="-injars temp.jar" /> 
 <arg value="-outjars optimized.jar" /> 
 <arg value="-libraryjars ${android-jar}" />
-<!-- arg value="-libraryjars ${external-libs}/android-support-v4.jar"/ -->
+<arg value="-libraryjars ${external-libs}/jpush-sdk-release1.3.5.jar"/>
 
 <arg value="-dontpreverify" /> 
 <arg value="-dontoptimize" /> 
@@ -113,11 +113,6 @@
 <arg value="-keep public class * extends android.webkit.*{*;}"/>
 <arg value="-keep public class * extends android.widget.*{*;}"/>
 <arg value="-keep  class * extends android.app.*{*;}"/>
-
-
-
-
-
 
 
 <arg value="-keep public class * implements java.io.Serializable {*;}"/>

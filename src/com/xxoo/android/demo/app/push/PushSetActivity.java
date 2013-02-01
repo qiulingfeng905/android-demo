@@ -18,6 +18,7 @@ import android.widget.Toast;
 import cn.jpush.android.api.BasicPushNotificationBuilder;
 import cn.jpush.android.api.CustomPushNotificationBuilder;
 import cn.jpush.android.api.JPushInterface;
+import com.xxoo.android.demo.R;
 
 public class PushSetActivity extends Activity implements OnClickListener{
 
@@ -90,7 +91,7 @@ public class PushSetActivity extends Activity implements OnClickListener{
 		String[] sArray = tag.split(",");
 		Set<String> tagSet = new LinkedHashSet<String>();
 		for (String sTagItme : sArray) {
-			if (!ExampleUtil.isValidTagAndAlias(sTagItme)) {
+			if (!MyUtil.isValidTagAndAlias(sTagItme)) {
 				Toast.makeText(PushSetActivity.this,R.string.error_tag_gs_empty, Toast.LENGTH_SHORT).show();
 				return;
 			}
@@ -113,7 +114,7 @@ public class PushSetActivity extends Activity implements OnClickListener{
 			Toast.makeText(PushSetActivity.this,R.string.error_alias_empty, Toast.LENGTH_SHORT).show();
 			return;
 		}
-		if (!ExampleUtil.isValidTagAndAlias(alias)) {
+		if (!MyUtil.isValidTagAndAlias(alias)) {
 			Toast.makeText(PushSetActivity.this,R.string.error_tag_gs_empty, Toast.LENGTH_SHORT).show();
 			return;
 		}

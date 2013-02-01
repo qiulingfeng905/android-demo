@@ -108,6 +108,8 @@ if exist %ttidFile% (
 			ant -f fast_ttid_config.xml -Dversion.ttid=%%i
 			aapt p -f -u -M AndroidManifest.xml -S res -A assets -I android.jar -F apk/demo_%%i_%version%.apk
 			aapt a apk/demo_%%i_%version%.apk classes.dex
+			::add lib to apk
+			aapt a apk/demo_%%i_%version%.apk lib/armeabi/*.so
 
 			jarsigner -digestalg SHA1 -sigalg MD5withRSA -verbose -storepass caoqinmiao -keystore demokeystore -signedjar apk/demo_signed_%%i_%version%.apk apk/demo_%%i_%version%.apk demokeystore
 			::call :checkStatus %errorlevel% "jarsigner -sign apk/demo_signed_%%i_%version%.apk"
@@ -149,7 +151,7 @@ goto OK
 
 :FIN
 (
-    echo "error，exit..."
+    echo "error,exit..."
 	goto DONE
 )
 
