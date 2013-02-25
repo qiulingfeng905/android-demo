@@ -1,6 +1,9 @@
 package com.xxoo.android.demo;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,14 +13,19 @@ import cn.jpush.android.api.JPushInterface;
 import com.xxoo.android.demo.app.Installation;
 import com.xxoo.android.demo.app.push.MyUtil;
 import com.xxoo.android.demo.app.push.PushSetActivity;
+import com.xxoo.android.demo.broadcast.MyTimeCountBroadCast;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainDemo extends InstrumentedActivity implements View.OnClickListener
 {
 
-    private Button mInit;
    	private Button mSetting;
-   	private Button mStopPush;
-   	private Button mResumePush;
+   	private TextView mTimeCount;
+    private MyBroadCastReceiver myBroadCastReceiver;
+    MyTimeCountBroadCast timeCountBroadCast = new MyTimeCountBroadCast();
+    long curValue = 0L;
 
     /** Called when the activity is first created. */
     @Override
@@ -27,7 +35,9 @@ public class MainDemo extends InstrumentedActivity implements View.OnClickListen
         setContentView(R.layout.main);
         String channelID = Installation.getJuChannelId(getApplicationContext());
         TextView v = (TextView)findViewById(R.id.main_tv_channel_id);
+        mTimeCount = (TextView)findViewById(R.id.tv_time_count);
         v.setText("ttid = " + channelID);
+        mTimeCount.setText(String.valueOf(curValue++));
         initView();
     }
 
@@ -49,15 +59,6 @@ public class MainDemo extends InstrumentedActivity implements View.OnClickListen
    		TextView mVersion = (TextView) findViewById(R.id.tv_version);
    		mVersion.setText("Version: " + versionName);
 
-   	    mInit = (Button)findViewById(R.id.init);
-   		mInit.setOnClickListener(this);
-
-   		mStopPush = (Button)findViewById(R.id.stopPush);
-   		mStopPush.setOnClickListener(this);
-
-   		mResumePush = (Button)findViewById(R.id.resumePush);
-   		mResumePush.setOnClickListener(this);
-
    		mSetting = (Button)findViewById(R.id.setting);
    		mSetting.setOnClickListener(this);
 
@@ -66,24 +67,45 @@ public class MainDemo extends InstrumentedActivity implements View.OnClickListen
    	@Override
    	public void onClick(View v) {
    		switch (v.getId()) {
-   		case R.id.init:
-   			init();
-   			break;
    		case R.id.setting:
    			Intent intent = new Intent(MainDemo.this, PushSetActivity.class);
    			startActivity(intent);
    			break;
-   		case R.id.stopPush:
-   			JPushInterface.stopPush(getApplicationContext());
-   			break;
-   		case R.id.resumePush:
-   			JPushInterface.resumePush(getApplicationContext());
-   			break;
    		}
    	}
 
-   	// 初始化 JPush。如果已经初始化，但没有登录成功，则执行重新登录。
-   	private void init(){
-   		JPushInterface.init(getApplicationContext());
-   	}
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        IntentFilter filter = new IntentFilter(MyTimeCountBroadCast.COUNT_ACTION);
+        filter.setPriority(1);
+        myBroadCastReceiver  = new MyBroadCastReceiver();
+        registerReceiver(myBroadCastReceiver, filter);
+
+
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                timeCountBroadCast.sendTimeCountBroadcast(getApplicationContext());
+            }
+        }, 10*1000, 1000
+        );
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        unregisterReceiver(myBroadCastReceiver);
+    }
+
+public class MyBroadCastReceiver  extends BroadcastReceiver {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        String action = intent.getAction();
+        if (action.equals(MyTimeCountBroadCast.COUNT_ACTION)){
+            abortBroadcast();
+            mTimeCount.setText(String.valueOf(curValue++));
+        }
+    }
+}
 }
