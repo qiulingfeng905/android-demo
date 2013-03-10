@@ -1,10 +1,13 @@
 package com.xxoo.android.demo;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,12 +17,13 @@ import com.xxoo.android.demo.app.Installation;
 import com.xxoo.android.demo.app.push.MyUtil;
 import com.xxoo.android.demo.app.push.PushSetActivity;
 import com.xxoo.android.demo.broadcast.MyTimeCountBroadCast;
+import com.xxoo.android.demo.fragment.MyFragment;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainDemo extends InstrumentedActivity implements View.OnClickListener {
-
+    private static final String TAG = "MyActivity";
     private Button mSetting;
     private TextView mTimeCount;
     private MyBroadCastReceiver myBroadCastReceiver;
@@ -32,6 +36,7 @@ public class MainDemo extends InstrumentedActivity implements View.OnClickListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, TAG + "--->onCreate");
         setContentView(R.layout.main);
         String channelID = Installation.getJuChannelId(getApplicationContext());
         TextView v = (TextView) findViewById(R.id.main_tv_channel_id);
@@ -40,6 +45,7 @@ public class MainDemo extends InstrumentedActivity implements View.OnClickListen
         mTimeCount.setText(String.valueOf(curValue++));
         initView();
         findViewById(R.id.btn_iat_demo).setOnClickListener(this);
+        findViewById(R.id.fragment).setOnClickListener(this);
     }
 
     private void initView() {
@@ -71,12 +77,20 @@ public class MainDemo extends InstrumentedActivity implements View.OnClickListen
         switch (v.getId()) {
             case R.id.btn_iat_demo:
                 intent = new Intent(MainDemo.this, IatDemoActivity.class);
+                startActivity(intent);
                 break;
             case R.id.setting:
                 intent = new Intent(MainDemo.this, PushSetActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.fragment:
+//                MyFragment dialogFragment = MyFragment.newInstance(
+//                        "Are you sure you want to do this?");
+//                          dialogFragment.show(getFragmentManager(), "dialog");
+                showDialog();
                 break;
         }
-        startActivity(intent);
+
     }
 
 
@@ -132,4 +146,21 @@ public class MainDemo extends InstrumentedActivity implements View.OnClickListen
         System.loadLibrary("hello-jni");
     }
 
+    public void showDialog() {
+
+        // DialogFragment.show() will take care of adding the fragment
+        // in a transaction.  We also want to remove any currently showing
+        // dialog, so make our own transaction and take care of that here.
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        // Create and show the dialog.
+        MyFragment newFragment = MyFragment.newInstance("dialog");
+        //这里会完成 commit 和 add Tag
+        newFragment.show(ft, "dialog");
+    }
 }
