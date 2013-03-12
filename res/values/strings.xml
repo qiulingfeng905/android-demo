@@ -13,9 +13,14 @@
     <string name="logining">程序在后台执行, 请查看日志！</string>
     <string name="setting">Push Setting</string>
     <string name="fragment">FragmentsDialog</string>
+    <string name="listview">ListView</string>
     <string name="setting_su">设置成功</string>
 
-
+    <!-- listview下拉刷新 -->
+    <string name="pull_to_refresh_pull_label">下拉可以刷新...</string>
+    <string name="pull_to_refresh_release_label">松开刷新...</string>
+    <string name="pull_to_refresh_refreshing_label">加载中...</string>
+    <string name="pull_to_refresh_tap_label">点击刷新...</string>
 
     <!-- 语音识别 -->
    	<string

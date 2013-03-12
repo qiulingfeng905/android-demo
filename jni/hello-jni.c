@@ -18,10 +18,7 @@
 #include <jni.h>
 
 /* This is a trivial JNI example where we use a native method
- * to return a new VM String. See the corresponding Java source
- * file located at:
- *
- *   apps/samples/hello-jni/project/src/com/example/hellojni/HelloJni.java
+ * to return a new VM String.
  */
 jstring
 Java_com_xxoo_android_demo_MainDemo_stringFromJNI( JNIEnv* env,
