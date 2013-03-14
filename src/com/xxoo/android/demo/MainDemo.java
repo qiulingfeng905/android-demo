@@ -46,6 +46,7 @@ public class MainDemo extends InstrumentedActivity implements View.OnClickListen
         initView();
         findViewById(R.id.btn_iat_demo).setOnClickListener(this);
         findViewById(R.id.fragment).setOnClickListener(this);
+        findViewById(R.id.listview).setOnClickListener(this);
     }
 
     private void initView() {
@@ -81,6 +82,10 @@ public class MainDemo extends InstrumentedActivity implements View.OnClickListen
                 break;
             case R.id.setting:
                 intent = new Intent(MainDemo.this, PushSetActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.listview:
+                intent = new Intent(MainDemo.this, PullToRefreshActivity.class);
                 startActivity(intent);
                 break;
             case R.id.fragment:
