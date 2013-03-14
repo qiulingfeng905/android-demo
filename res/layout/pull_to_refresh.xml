@@ -12,4 +12,10 @@
         android:layout_height="fill_parent"
         android:layout_width="fill_parent"
         />
+
+<ImageView
+        android:id="@+id/listview_empty"
+        android:src="@drawable/jpush_notification_icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:layout_gravity="center"/>
 </LinearLayout>
