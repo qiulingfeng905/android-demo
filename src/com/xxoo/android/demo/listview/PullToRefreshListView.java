@@ -115,7 +115,7 @@ public class PullToRefreshListView extends ListView implements OnScrollListener 
 
 
         mRefreshState = TAP_TO_REFRESH;
-
+        //bug:当元素个数显示小于屏幕，没法隐藏Header and Footer，不知道咋解决
         addHeaderView(mRefreshView);
         addFooterView(mRefreshViewFooter);
 
